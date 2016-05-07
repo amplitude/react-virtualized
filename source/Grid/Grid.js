@@ -408,8 +408,16 @@ export default class Grid extends Component {
         containerSize: width,
         offset: scrollLeft
       })
+      const horizontalOffsetAdjustment = this._rowSizeAndPositionManager.getOffsetAdjustment({
+        containerSize: width,
+        offset: scrollLeft
+      })
 
       const visibleRowIndices = this._rowSizeAndPositionManager.getVisibleCellRange({
+        containerSize: height,
+        offset: scrollTop
+      })
+      const verticalOffsetAdjustment = this._rowSizeAndPositionManager.getOffsetAdjustment({
         containerSize: height,
         offset: scrollTop
       })
@@ -446,10 +454,12 @@ export default class Grid extends Component {
         columnSizeAndPositionManager: this._columnSizeAndPositionManager,
         columnStartIndex: this._columnStartIndex,
         columnStopIndex: this._columnStopIndex,
+        horizontalOffsetAdjustment,
         isScrolling,
         rowSizeAndPositionManager: this._rowSizeAndPositionManager,
         rowStartIndex: this._rowStartIndex,
-        rowStopIndex: this._rowStopIndex
+        rowStopIndex: this._rowStopIndex,
+        verticalOffsetAdjustment
       })
     }
 
