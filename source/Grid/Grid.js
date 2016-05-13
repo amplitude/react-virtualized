@@ -57,6 +57,8 @@ export default class Grid extends Component {
      */
     cellRangeRenderer: PropTypes.func.isRequired,
 
+    children: PropTypes.any,
+
     /**
      * Optional custom CSS class name to attach to root Grid element.
      */
@@ -498,6 +500,7 @@ export default class Grid extends Component {
         {childrenToDisplay.length === 0 &&
           noContentRenderer()
         }
+        {this.props.children}
       </div>
     )
   }
