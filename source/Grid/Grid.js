@@ -518,6 +518,12 @@ export default class Grid extends Component {
       gridStyle.overflowY = 'hidden'
     }
 
+    const showNoContentRenderer = (
+      childrenToDisplay.length === 0 &&
+      height > 0 &&
+      width > 0
+    )
+
     return (
       <div
         ref='scrollingContainer'
@@ -542,7 +548,7 @@ export default class Grid extends Component {
             {childrenToDisplay}
           </div>
         }
-        {childrenToDisplay.length === 0 &&
+        {showNoContentRenderer &&
           noContentRenderer()
         }
         {this.props.children}
