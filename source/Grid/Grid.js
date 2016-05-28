@@ -6,7 +6,6 @@ import ScalingCellSizeAndPositionManager from './utils/ScalingCellSizeAndPositio
 import createCallbackMemoizer from '../utils/createCallbackMemoizer'
 import getOverscanIndices from './utils/getOverscanIndices'
 import getScrollbarSize from 'dom-helpers/util/scrollbarSize'
-import getUpdatedOffsetForIndex from '../utils/getUpdatedOffsetForIndex'
 import raf from 'raf'
 import shallowCompare from 'react-addons-shallow-compare'
 import updateScrollIndexHelper from './utils/updateScrollIndexHelper'
@@ -697,15 +696,11 @@ export default class Grid extends Component {
     if (scrollToColumn >= 0 && columnCount > 0) {
       const targetIndex = Math.max(0, Math.min(columnCount - 1, scrollToColumn))
 
-      const columnMetadatum = this._columnSizeAndPositionManager.getSizeAndPositionOfCell(targetIndex)
-
-      const calculatedScrollLeft = getUpdatedOffsetForIndex({
+      const calculatedScrollLeft = this._columnSizeAndPositionManager.getUpdatedOffsetForIndex({
         align: scrollToAlignment,
-        cellOffset: columnMetadatum.offset,
-        cellSize: columnMetadatum.size,
         containerSize: width,
         currentOffset: scrollLeft,
-        targetIndex: scrollToColumn
+        targetIndex
       })
 
       if (scrollLeft !== calculatedScrollLeft) {
@@ -723,15 +718,11 @@ export default class Grid extends Component {
     if (scrollToRow >= 0 && rowCount > 0) {
       const targetIndex = Math.max(0, Math.min(rowCount - 1, scrollToRow))
 
-      const rowMetadatum = this._rowSizeAndPositionManager.getSizeAndPositionOfCell(targetIndex)
-
-      const calculatedScrollTop = getUpdatedOffsetForIndex({
+      const calculatedScrollTop = this._rowSizeAndPositionManager.getUpdatedOffsetForIndex({
         align: scrollToAlignment,
-        cellOffset: rowMetadatum.offset,
-        cellSize: rowMetadatum.size,
         containerSize: height,
         currentOffset: scrollTop,
-        targetIndex: scrollToRow
+        targetIndex
       })
 
       if (scrollTop !== calculatedScrollTop) {
