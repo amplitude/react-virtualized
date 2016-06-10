@@ -35,6 +35,12 @@ export default class Grid extends Component {
     'aria-label': PropTypes.string,
 
     /**
+     * Removes fixed height from the scrollingContainer so that the total height
+     * of rows can stretch the window. Intended for use with WindowScroller
+     */
+    autoHeight: PropTypes.bool,
+
+    /**
      * Responsible for rendering a cell given an row and column index.
      * Should implement the following interface: ({ columnIndex: number, rowIndex: number }): PropTypes.node
      */
@@ -122,12 +128,6 @@ export default class Grid extends Component {
      * These rows can help for smoother scrolling on touch devices or browsers that send scroll events infrequently.
      */
     overscanRowCount: PropTypes.number.isRequired,
-
-    /**
-     * Removes fixed height from the scrollingContainer so that the total height
-     * of rows can stretch the window. Intended for use with WindowScroller
-     */
-    removeHeightContainer: PropTypes.bool,
 
     /**
      * Either a fixed row height (number) or a function that returns the height of a row given its index.
@@ -438,7 +438,7 @@ export default class Grid extends Component {
       noContentRenderer,
       overscanColumnCount,
       overscanRowCount,
-      removeHeightContainer,
+      autoHeight,
       rowCount,
       style,
       width
@@ -517,7 +517,7 @@ export default class Grid extends Component {
 
     const gridStyle = {
       ...style,
-      height: removeHeightContainer ? 'auto' : height,
+      height: autoHeight ? 'auto' : height,
       width
     }
 
@@ -560,8 +560,7 @@ export default class Grid extends Component {
               height: totalRowsHeight,
               maxWidth: totalColumnsWidth,
               maxHeight: totalRowsHeight,
-              pointerEvents: isScrolling ? 'none' : 'auto',
-              position: 'relative'
+              pointerEvents: isScrolling ? 'none' : 'auto'
             }}
           >
             {childrenToDisplay}
