@@ -567,7 +567,7 @@ describe('Grid', () => {
       expect(rendered.style.backgroundColor).toEqual('red')
     })
 
-    it('should use the exceed global CSS classNames for rows', () => {
+    it('should use the expected global CSS classNames for rows', () => {
       const rendered = findDOMNode(render(getMarkup({
         rowCount: 3,
         columnCount: 1
