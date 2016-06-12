@@ -68,6 +68,9 @@ export default class VirtualScroll extends Component {
     /** Number of rows in list. */
     rowCount: PropTypes.number.isRequired,
 
+    /** Static or dynamic class name of row */
+    rowClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.object]),
+
     /** See Grid#scrollToAlignment */
     scrollToAlignment: PropTypes.oneOf(['auto', 'end', 'start', 'center']).isRequired,
 
@@ -114,6 +117,7 @@ export default class VirtualScroll extends Component {
       onScroll,
       rowHeight,
       rowRenderer,
+      rowClassName,
       overscanRowCount,
       autoHeight,
       rowCount,
@@ -151,6 +155,7 @@ export default class VirtualScroll extends Component {
         autoHeight={autoHeight}
         rowHeight={rowHeight}
         rowCount={rowCount}
+        rowClassName={rowClassName}
         scrollToAlignment={scrollToAlignment}
         scrollToRow={scrollToIndex}
         scrollTop={scrollTop}

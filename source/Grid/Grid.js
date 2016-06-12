@@ -140,6 +140,9 @@ export default class Grid extends Component {
      */
     rowCount: PropTypes.number.isRequired,
 
+    /** Dynamic or static class name of each row */
+    rowClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.object]),
+
     /** Horizontal offset. */
     scrollLeft: PropTypes.number,
 
@@ -440,6 +443,7 @@ export default class Grid extends Component {
       overscanRowCount,
       autoHeight,
       rowCount,
+      rowClassName,
       style,
       width
     } = this.props
@@ -509,6 +513,7 @@ export default class Grid extends Component {
         rowSizeAndPositionManager: this._rowSizeAndPositionManager,
         rowStartIndex: this._rowStartIndex,
         rowStopIndex: this._rowStopIndex,
+        rowClassName: this._wrapSizeGetter(rowClassName),
         scrollLeft,
         scrollTop,
         verticalOffsetAdjustment
