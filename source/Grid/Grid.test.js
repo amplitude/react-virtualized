@@ -44,7 +44,7 @@ describe('Grid', () => {
     autoHeight = false,
     rowHeight = 20,
     rowCount = NUM_ROWS,
-    rowClassName = null,
+    cellClassName = null,
     scrollLeft,
     scrollToAlignment,
     scrollToColumn,
@@ -71,7 +71,7 @@ describe('Grid', () => {
         autoHeight={autoHeight}
         rowHeight={rowHeight}
         rowCount={rowCount}
-        rowClassName={rowClassName}
+        cellClassName={cellClassName}
         scrollLeft={scrollLeft}
         scrollToAlignment={scrollToAlignment}
         scrollToColumn={scrollToColumn}
@@ -579,11 +579,11 @@ describe('Grid', () => {
       expect(rows).toEqual([true, true, true])
     })
 
-    it('should use a custom :rowClassName if specified', () => {
+    it('should use a custom :cellClassName if specified', () => {
       const rendered = findDOMNode(render(getMarkup({
         rowCount: 3,
         columnCount: 1,
-        rowClassName: 'foo'
+        cellClassName: 'foo'
       })))
       const rows = Array.from(rendered.querySelectorAll('.Grid__cell')).map(row => {
         return row.classList.contains('foo')
@@ -592,11 +592,11 @@ describe('Grid', () => {
       expect(rows).toEqual([true, true, true])
     })
 
-    it('should use a custom :rowClassName if function specified', () => {
+    it('should use a custom :cellClassName if function specified', () => {
       const rendered = findDOMNode(render(getMarkup({
         rowCount: 3,
         columnCount: 1,
-        rowClassName: () => 'foo'
+        cellClassName: () => 'foo'
       })))
       const rows = Array.from(rendered.querySelectorAll('.Grid__cell')).map(row => {
         return row.classList.contains('foo')
@@ -605,11 +605,11 @@ describe('Grid', () => {
       expect(rows).toEqual([true, true, true])
     })
 
-    it('should use a custom :rowClassName indexes', () => {
+    it('should use a custom :cellClassName indexes', () => {
       const rendered = findDOMNode(render(getMarkup({
         rowCount: 2,
         columnCount: 2,
-        rowClassName: ({rowIndex, columnIndex}) => {
+        cellClassName: ({rowIndex, columnIndex}) => {
           return `col-${rowIndex}-${columnIndex}`
         }
       })))

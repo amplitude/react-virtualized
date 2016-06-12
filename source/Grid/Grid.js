@@ -140,8 +140,8 @@ export default class Grid extends Component {
      */
     rowCount: PropTypes.number.isRequired,
 
-    /** Dynamic or static class name of each row */
-    rowClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.func, PropTypes.object]),
+    /** Optional custom CSS class for individual cells */
+    cellClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
 
     /** Horizontal offset. */
     scrollLeft: PropTypes.number,
@@ -443,7 +443,7 @@ export default class Grid extends Component {
       overscanRowCount,
       autoHeight,
       rowCount,
-      rowClassName,
+      cellClassName,
       style,
       width
     } = this.props
@@ -513,7 +513,7 @@ export default class Grid extends Component {
         rowSizeAndPositionManager: this._rowSizeAndPositionManager,
         rowStartIndex: this._rowStartIndex,
         rowStopIndex: this._rowStopIndex,
-        rowClassName: this._wrapSizeGetter(rowClassName),
+        cellClassName: this._wrapCellClassNameGetter(cellClassName),
         scrollLeft,
         scrollTop,
         verticalOffsetAdjustment
@@ -694,11 +694,19 @@ export default class Grid extends Component {
       this.setState(newState)
     }
   }
+  
+  _wrapPropertyGetter (value) {
+    return value instanceof Function
+      ? value
+      : () => value
+  }
 
   _wrapSizeGetter (size) {
-    return typeof size === 'function'
-      ? size
-      : () => size
+    return _wrapPropertyGetter(size)
+  }
+  
+  _wrapCellClassNameGetter (className) {
+    return _wrapPropertyGetter(className)
   }
 
   _updateScrollLeftForScrollToColumn (props = this.props, state = this.state) {
