@@ -40,6 +40,12 @@ export default class Grid extends Component {
      */
     autoHeight: PropTypes.bool,
 
+    /** Optional custom CSS class for individual cells */
+    cellClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
+
+    /** Optional custom styles for individual cells */
+    cellStyle: PropTypes.oneOfType([PropTypes.object, PropTypes.func]),
+
     /**
      * Responsible for rendering a cell given an row and column index.
      * Should implement the following interface: ({ columnIndex: number, rowIndex: number }): PropTypes.node
@@ -139,9 +145,6 @@ export default class Grid extends Component {
      * Number of rows in grid.
      */
     rowCount: PropTypes.number.isRequired,
-
-    /** Optional custom CSS class for individual cells */
-    cellClassName: PropTypes.oneOfType([PropTypes.string, PropTypes.func]),
 
     /** Horizontal offset. */
     scrollLeft: PropTypes.number,
@@ -433,8 +436,10 @@ export default class Grid extends Component {
 
   render () {
     const {
+      cellClassName,
       cellRenderer,
       cellRangeRenderer,
+      cellStyle,
       className,
       columnCount,
       height,
@@ -443,7 +448,6 @@ export default class Grid extends Component {
       overscanRowCount,
       autoHeight,
       rowCount,
-      cellClassName,
       style,
       width
     } = this.props
@@ -504,7 +508,9 @@ export default class Grid extends Component {
 
       childrenToDisplay = cellRangeRenderer({
         cellCache: this._cellCache,
+        cellClassName: this._wrapCellClassNameGetter(cellClassName),
         cellRenderer,
+        cellStyle: this._wrapCellStyleGetter(cellStyle),
         columnSizeAndPositionManager: this._columnSizeAndPositionManager,
         columnStartIndex: this._columnStartIndex,
         columnStopIndex: this._columnStopIndex,
@@ -513,7 +519,6 @@ export default class Grid extends Component {
         rowSizeAndPositionManager: this._rowSizeAndPositionManager,
         rowStartIndex: this._rowStartIndex,
         rowStopIndex: this._rowStopIndex,
-        cellClassName: this._wrapCellClassNameGetter(cellClassName),
         scrollLeft,
         scrollTop,
         verticalOffsetAdjustment
@@ -695,6 +700,14 @@ export default class Grid extends Component {
     }
   }
 
+  _wrapCellClassNameGetter (className) {
+    return this._wrapPropertyGetter(className)
+  }
+
+  _wrapCellStyleGetter (style) {
+    return this._wrapPropertyGetter(style)
+  }
+
   _wrapPropertyGetter (value) {
     return value instanceof Function
       ? value
@@ -703,10 +716,6 @@ export default class Grid extends Component {
 
   _wrapSizeGetter (size) {
     return this._wrapPropertyGetter(size)
-  }
-
-  _wrapCellClassNameGetter (className) {
-    return this._wrapPropertyGetter(className)
   }
 
   _updateScrollLeftForScrollToColumn (props = this.props, state = this.state) {

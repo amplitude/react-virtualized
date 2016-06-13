@@ -8,7 +8,9 @@ import cn from 'classnames'
  */
 export default function defaultCellRangeRenderer ({
   cellCache,
+  cellClassName,
   cellRenderer,
+  cellStyle,
   columnSizeAndPositionManager,
   columnStartIndex,
   columnStopIndex,
@@ -16,7 +18,6 @@ export default function defaultCellRangeRenderer ({
   rowSizeAndPositionManager,
   rowStartIndex,
   rowStopIndex,
-  cellClassName,
   scrollLeft,
   scrollTop
 }: DefaultCellRangeRendererParams) {
@@ -28,6 +29,7 @@ export default function defaultCellRangeRenderer ({
     for (let columnIndex = columnStartIndex; columnIndex <= columnStopIndex; columnIndex++) {
       let columnDatum = columnSizeAndPositionManager.getSizeAndPositionOfCell(columnIndex)
       let key = `${rowIndex}-${columnIndex}`
+      let cellStyleObject = cellStyle({ rowIndex, columnIndex })
       let renderedCell
 
       // Avoid re-creating cells while scrolling.
@@ -61,12 +63,12 @@ export default function defaultCellRangeRenderer ({
         <div
           key={key}
           className={cn('Grid__cell', cellClassName({rowIndex, columnIndex}))}
-          style={{
+          style={Object.assign({}, cellStyleObject, {
             height: rowDatum.size,
             left: columnDatum.offset,
             top: rowDatum.offset,
             width: columnDatum.size
-          }}
+          })}
         >
           {renderedCell}
         </div>
