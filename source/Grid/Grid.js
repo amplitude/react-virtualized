@@ -75,6 +75,8 @@ export default class Grid extends Component {
      */
     className: PropTypes.string,
 
+    children: PropTypes.any,
+
     /**
      * Number of columns in grid.
      */
@@ -601,6 +603,7 @@ export default class Grid extends Component {
         {showNoContentRenderer &&
           noContentRenderer()
         }
+        {this.props.children}
       </div>
     )
   }
