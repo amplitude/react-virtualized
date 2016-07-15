@@ -542,7 +542,6 @@ export default class Grid extends Component {
     }
 
     const gridStyle = {
-      ...style,
       height: autoHeight ? 'auto' : height,
       width
     }
@@ -583,7 +582,10 @@ export default class Grid extends Component {
         className={cn('Grid', className)}
         onScroll={this._onScroll}
         role='grid'
-        style={gridStyle}
+        style={{
+          ...gridStyle,
+          ...style
+        }}
         tabIndex={tabIndex}
       >
         {childrenToDisplay.length > 0 &&
