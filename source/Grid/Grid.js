@@ -372,6 +372,8 @@ export default class Grid extends Component {
     } else {
       this._scrollbarSizeMeasured = true
     }
+
+    this.calculateChildrenToRender()
   }
 
   componentWillUnmount () {
@@ -447,34 +449,31 @@ export default class Grid extends Component {
       scrollToIndex: this.props.scrollToRow,
       updateScrollOffsetForScrollToIndex: () => this._updateScrollTopForScrollToRow(nextProps, nextState)
     })
+
+    this.calculateChildrenToRender(nextProps, nextState)
   }
 
-  render () {
+  calculateChildrenToRender (props = this.props, state = this.state) {
     const {
-      autoHeight,
       cellClassName,
       cellRenderer,
       cellRangeRenderer,
       cellStyle,
-      className,
       columnCount,
       height,
-      noContentRenderer,
       overscanColumnCount,
       overscanRowCount,
       rowCount,
-      style,
-      tabIndex,
       width
-    } = this.props
+    } = props
 
     const {
       isScrolling,
       scrollLeft,
       scrollTop
-    } = this.state
+    } = state
 
-    let childrenToDisplay = []
+    this._childrenToDisplay = []
 
     // Render only enough columns and rows to cover the visible area of the grid.
     if (height > 0 && width > 0) {
@@ -522,7 +521,7 @@ export default class Grid extends Component {
       this._rowStartIndex = overscanRowIndices.overscanStartIndex
       this._rowStopIndex = overscanRowIndices.overscanStopIndex
 
-      childrenToDisplay = cellRangeRenderer({
+      this._childrenToDisplay = cellRangeRenderer({
         cellCache: this._cellCache,
         cellClassName: this._wrapCellClassNameGetter(cellClassName),
         cellRenderer,
@@ -540,6 +539,22 @@ export default class Grid extends Component {
         verticalOffsetAdjustment
       })
     }
+  }
+
+  render () {
+    const {
+      autoHeight,
+      className,
+      columnCount,
+      height,
+      noContentRenderer,
+      style,
+      tabIndex,
+      width } = this.props
+
+    const { isScrolling } = this.state
+
+    const childrenToDisplay = this._childrenToDisplay
 
     const gridStyle = {
       height: autoHeight ? 'auto' : height,
