@@ -58,9 +58,11 @@ export default class WindowScroller extends Component {
   componentWillUnmount () {
     window.removeEventListener('scroll', this._onScrollWindow, false)
     window.removeEventListener('resize', this._onResizeWindow, false)
+
     if (this._disablePointerEventsTimeoutId) {
       clearTimeout(this._disablePointerEventsTimeoutId)
-      this._enablePointerEvents()
+
+      this._enablePointerEventsIfDisabled()
     }
   }
 
@@ -110,20 +112,22 @@ export default class WindowScroller extends Component {
     )
   }
 
-  _enablePointerEvents () {
-    this._disablePointerEventsTimeoutId = null
-
-    document.body.style.pointerEvents = this._originalBodyPointerEvents
-
-    this._originalBodyPointerEvents = null
-  }
-
   _enablePointerEventsAfterDelayCallback () {
-    this._enablePointerEvents()
+    this._enablePointerEventsIfDisabled()
 
     this.setState({
       isScrolling: false
     })
+  }
+
+  _enablePointerEventsIfDisabled () {
+    if (this._disablePointerEventsTimeoutId) {
+      this._disablePointerEventsTimeoutId = null
+
+      document.body.style.pointerEvents = this._originalBodyPointerEvents
+
+      this._originalBodyPointerEvents = null
+    }
   }
 
   _onResizeWindow (event) {
